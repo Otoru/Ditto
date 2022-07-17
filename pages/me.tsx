@@ -2,15 +2,15 @@ import { withPageAuthRequired } from '@auth0/nextjs-auth0'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
-import Home from 'components/pages/home'
+import Profile from 'components/pages/me'
 
 const Page: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>Ditto</title>
+        <title>About me</title>
       </Head>
-      <Home />
+      <Profile />
     </div>
   )
 }

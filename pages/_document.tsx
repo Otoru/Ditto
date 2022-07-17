@@ -6,7 +6,9 @@ import theme from 'theme'
 const Document = () => {
   return (
     <Html>
-      <Head />
+      <Head>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <body>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <Main />

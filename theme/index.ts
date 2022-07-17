@@ -10,7 +10,7 @@ const theme = extendTheme(
     },
     components,
   },
-  withDefaultColorScheme({ colorScheme: 'blue' })
+  withDefaultColorScheme({ colorScheme: 'blue' }),
 )
 
 export default theme

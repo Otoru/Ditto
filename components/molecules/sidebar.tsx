@@ -55,6 +55,7 @@ const Items: React.FC<Props> = ({ withDetails, items, ...props }) => {
             <Button
               as={Link}
               w={'100%'}
+              key={href}
               leftIcon={icon}
               variant={'ghost'}
               justifyContent={'start'}
@@ -68,6 +69,7 @@ const Items: React.FC<Props> = ({ withDetails, items, ...props }) => {
             <Tooltip key={href} label={label}>
               <IconButton
                 as={Link}
+                key={href}
                 icon={icon}
                 rounded={'full'}
                 variant={'ghost'}
@@ -98,6 +100,7 @@ const Sidebar: React.FC = () => {
           transition={{ type: 'tween' }}
           animate={{ width: sidebar.isOpen ? 280 : 64 }}
           style={{
+            width: '280px',
             height: '100%',
           }}
         >
@@ -136,6 +139,7 @@ const Sidebar: React.FC = () => {
         placement={'left'}
         isOpen={drawer.isOpen}
         onClose={drawer.onToggle}
+        finalFocusRef={drawer.ref}
       >
         <DrawerOverlay />
         <DrawerContent>

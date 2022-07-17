@@ -10,11 +10,11 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 
   return (
     <UserProvider>
-      <ChakraProvider cookies={cookies}>
-        <DashboardProvider>
+      <DashboardProvider>
+        <ChakraProvider cookies={cookies}>
           <Component {...pageProps} />
-        </DashboardProvider>
-      </ChakraProvider>
+        </ChakraProvider>
+      </DashboardProvider>
     </UserProvider>
   )
 }

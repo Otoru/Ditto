@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useRef,
+  RefObject,
+} from 'react'
 import { useDisclosure } from '@chakra-ui/react'
 
 interface Breadcrumb {
@@ -11,6 +17,7 @@ interface Drawer {
   isOpen: boolean
   onClose: () => void
   onToggle: () => void
+  ref?: RefObject<HTMLButtonElement>
 }
 
 interface Sidebar {
@@ -19,15 +26,31 @@ interface Sidebar {
   onToggle: () => void
 }
 
+export type colors =
+  | 'blue'
+  | 'red'
+  | 'orange'
+  | 'yellow'
+  | 'green'
+  | 'teal'
+  | 'cyan'
+  | 'purple'
+  | 'pink'
+
 interface Context {
   drawer: Drawer
+  color: colors
   sidebar: Sidebar
   breadcrumb: Breadcrumb[]
+  setColor: React.Dispatch<React.SetStateAction<colors>>
   setBreadcrumb: React.Dispatch<React.SetStateAction<Breadcrumb[]>>
 }
 
-const defaultValues = {
+const defaultValues: Context = {
   breadcrumb: [],
+  color: 'blue',
+  setColor: () => ({}),
+  setBreadcrumb: () => ({}),
   drawer: {
     isOpen: false,
     onClose: () => undefined,
@@ -38,7 +61,6 @@ const defaultValues = {
     onClose: () => undefined,
     onToggle: () => undefined,
   },
-  setBreadcrumb: () => ({}),
 }
 
 interface Props {
@@ -49,12 +71,18 @@ const context = createContext<Context>(defaultValues)
 
 export const DashboardProvider: React.FC<Props> = ({ children }) => {
   const [breadcrumb, setBreadcrumb] = useState<Breadcrumb[]>([])
+  const [color, setColor] = useState<colors>('purple')
+
+  const props = useDisclosure({ defaultIsOpen: true })
+  const ref = useRef()
 
   const value = {
+    color,
+    setColor,
     breadcrumb,
     setBreadcrumb,
     drawer: useDisclosure(),
-    sidebar: useDisclosure(),
+    sidebar: { ref, ...props },
   }
 
   return <context.Provider value={value}>{children}</context.Provider>

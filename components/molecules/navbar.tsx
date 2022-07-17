@@ -33,6 +33,7 @@ const Navbar: React.FC<BoxProps> = (props) => {
         </Show>
         <Hide above={'md'}>
           <IconButton
+            ref={drawer.ref}
             variant={'ghost'}
             onClick={drawer.onToggle}
             icon={<Icon as={Menu} />}

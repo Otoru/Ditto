@@ -1,3 +1,4 @@
+export { default as ColorPicker } from 'components/atoms/color-picker'
 export { default as Breadcrumb } from 'components/atoms/breadcrumb'
 export { default as Profile } from 'components/atoms/profile'
 export { default as Footer } from 'components/atoms/footer'

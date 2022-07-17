@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
-import { Flex } from '@chakra-ui/react'
+import { Flex, VStack } from '@chakra-ui/react'
 
 import { WithSidebar } from 'components/templates'
 import { Sidebar } from 'components/molecules'
+import { ColorPicker } from 'components/atoms'
 import { useDashboard } from 'lib/dashboard'
 
 const Home: React.FC = () => {
@@ -25,8 +26,13 @@ const Home: React.FC = () => {
 
   return (
     <WithSidebar sidebar={<Sidebar />}>
-      <Flex align={'center'} justify={'center'} h={'100%'} w={'100%'}>
-        <h1>Welcome to Ditto!</h1>
+      <Flex p={4} align={'center'} justify={'center'} h={'100%'} w={'100%'}>
+        <Flex align={'center'} justify={'center'} h={'100%'} flexGrow={1}>
+          <h1>Welcome to Ditto!</h1>
+        </Flex>
+        <VStack h={'100%'} w={'320px'}>
+          <ColorPicker w={'100%'} />
+        </VStack>
       </Flex>
     </WithSidebar>
   )

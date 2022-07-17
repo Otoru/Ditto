@@ -10,6 +10,7 @@ import {
 import NextLink from 'next/link'
 import React from 'react'
 
+import { useDashboard } from 'lib/dashboard'
 import { Chevron } from 'lib/icons'
 
 interface Item {
@@ -23,13 +24,14 @@ interface Props {
 }
 
 const Breadcrumb: React.FC<Props> = ({ items }) => {
-  const blue = useColorModeValue('blue.600', 'blue.200')
+  const { color } = useDashboard()
+  const primary = useColorModeValue(`${color}.600`, `${color}.200`)
 
   return (
     <Box w={'100%'}>
       <Flex justify={'space-between'} align={'center'} px={4}>
         <DefaultBreadcrumb
-          color={blue}
+          color={primary}
           separator={<Icon display={'flex'} h={4} w={4} as={Chevron} />}
         >
           {items.map(({ href, label, isCurrentPage }, index) => (

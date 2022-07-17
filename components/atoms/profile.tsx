@@ -25,10 +25,7 @@ interface Props extends BoxProps {
 }
 
 const Profile: React.FC<Props> = ({ withDetails, ...props }) => {
-  const gray = useColorModeValue('gray.400', 'gray.500')
-  const blue = useColorModeValue('blue.600', 'blue.200')
-
-  const { drawer } = useDashboard()
+  const { drawer, color } = useDashboard()
   const { user } = useUser()
   const router = useRouter()
 
@@ -36,6 +33,9 @@ const Profile: React.FC<Props> = ({ withDetails, ...props }) => {
     router.push('/me')
     drawer.onClose()
   }
+
+  const primary = useColorModeValue(`${color}.600`, `${color}.200`)
+  const gray = useColorModeValue('gray.400', 'gray.500')
 
   const avatar = user?.picture ? user?.picture : undefined
   return (
@@ -45,7 +45,7 @@ const Profile: React.FC<Props> = ({ withDetails, ...props }) => {
           <Avatar src={avatar} size={'sm'} />
           {withDetails && (
             <VStack spacing={0} align={'start'}>
-              <Heading color={blue} size={'sm'}>
+              <Heading color={primary} size={'sm'}>
                 {user?.name}
               </Heading>
               <Text fontSize={'xs'} color={gray}>

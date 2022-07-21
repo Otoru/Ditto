@@ -2,9 +2,7 @@ import { extendTheme, withDefaultColorScheme } from '@chakra-ui/react'
 
 import components from 'theme/components'
 
-type color = "blue" | "red" | "orange" | "yellow" | "green" | "teal" | "cyan" | "purple" | "pink"
-
-const themeFactory = (color: color) => (extendTheme(
+export const theme = extendTheme(
   {
     config: {
       initialColorMode: 'system',
@@ -12,17 +10,5 @@ const themeFactory = (color: color) => (extendTheme(
     },
     components,
   },
-  withDefaultColorScheme({ colorScheme: color }),
-))
-
-export const themes = {
-  red: themeFactory('red'),
-  teal: themeFactory('teal'),
-  cyan: themeFactory('cyan'),
-  pink: themeFactory('pink'),
-  blue: themeFactory('blue'),
-  green: themeFactory('green'),
-  orange: themeFactory('orange'),
-  yellow: themeFactory('yellow'),
-  purple: themeFactory('purple'),
-}
+  withDefaultColorScheme({ colorScheme: 'blue' }),
+)

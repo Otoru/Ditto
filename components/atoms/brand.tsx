@@ -7,12 +7,10 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 
-import { useDashboard } from 'lib/dashboard'
 import { Pokemon } from 'lib/icons'
 
 const Brand: React.FC<StackProps> = (props) => {
-  const { color } = useDashboard()
-  const primary = useColorModeValue(`${color}.600`, `${color}.200`)
+  const primary = useColorModeValue('blue.600', 'blue.200')
   return (
     <HStack {...props}>
       <Icon w={4} h={4} color={primary} as={Pokemon} />

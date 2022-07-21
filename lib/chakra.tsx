@@ -6,8 +6,7 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 
-import { useDashboard } from 'lib/dashboard'
-import { themes } from 'theme'
+import { theme } from 'theme'
 
 interface Props extends ChakraProviderProps {
   children: React.ReactNode
@@ -23,9 +22,6 @@ export const ChakraProvider: React.FC<Props> = ({
     typeof cookies === 'string'
       ? cookieStorageManagerSSR(cookies)
       : localStorageManager
-
-  const { color } = useDashboard()
-  const theme = themes[color]
 
   return (
     <Provider {...props} theme={theme} colorModeManager={colorModeManager}>

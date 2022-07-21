@@ -10,7 +10,6 @@ import {
 import NextLink from 'next/link'
 import React from 'react'
 
-import { useDashboard } from 'lib/dashboard'
 import { Chevron } from 'lib/icons'
 
 interface Item {
@@ -24,8 +23,7 @@ interface Props {
 }
 
 const Breadcrumb: React.FC<Props> = ({ items }) => {
-  const { color } = useDashboard()
-  const primary = useColorModeValue(`${color}.600`, `${color}.200`)
+  const primary = useColorModeValue('blue.600', 'blue.200')
 
   return (
     <Box w={'100%'}>

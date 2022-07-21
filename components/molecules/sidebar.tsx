@@ -8,6 +8,7 @@ import {
   VStack,
   Button,
   Tooltip,
+  Divider,
   StackProps,
   IconButton,
   DrawerBody,
@@ -16,13 +17,14 @@ import {
   DrawerOverlay,
   DrawerCloseButton,
   useColorModeValue,
+  DrawerFooter,
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { motion } from 'framer-motion'
 import React from 'react'
 
+import { Left, Right, Home, Gear, Chart } from 'lib/icons'
 import { Brand, Profile } from 'components/atoms'
-import { Left, Right, Home } from 'lib/icons'
 import { useDashboard } from 'lib/dashboard'
 
 interface Item {
@@ -48,7 +50,7 @@ const Items: React.FC<Props> = ({ withDetails, items, ...props }) => {
   }
 
   return (
-    <VStack {...props}>
+    <VStack spacing={2} {...props}>
       {items.map(({ icon, label, href }) => {
         if (withDetails) {
           return (
@@ -89,7 +91,11 @@ const Sidebar: React.FC = () => {
 
   const { drawer, sidebar } = useDashboard()
 
-  const menu = [{ icon: <Icon as={Home} />, label: 'Home', href: '/' }]
+  const menu = [
+    { icon: <Icon as={Home} />, label: 'Home', href: '/' },
+    { icon: <Icon as={Chart} />, label: 'Dashboard', href: '/#chart' },
+    { icon: <Icon as={Gear} />, label: 'Settings', href: '/#gear' },
+  ]
   return (
     <>
       <Show above={'md'}>
@@ -124,13 +130,16 @@ const Sidebar: React.FC = () => {
                   icon={<Icon as={sidebar.isOpen ? Left : Right} />}
                 />
               </Flex>
-              <Profile p={4} withDetails={sidebar.isOpen} />
               <Items
                 p={4}
                 w={'100%'}
                 items={menu}
                 withDetails={sidebar.isOpen}
               />
+            </Box>
+            <Box w={'100%'}>
+              <Divider />
+              <Profile p={4} withDetails={sidebar.isOpen} />
             </Box>
           </Flex>
         </motion.div>
@@ -148,9 +157,12 @@ const Sidebar: React.FC = () => {
             <Brand />
           </DrawerHeader>
           <DrawerBody px={0}>
-            <Profile withDetails p={4} />
             <Items p={4} w={'100%'} items={menu} withDetails={true} />
           </DrawerBody>
+          <Divider />
+          <DrawerFooter w={'100%'}>
+            <Profile w={'100%'} withDetails />
+          </DrawerFooter>
         </DrawerContent>
       </Drawer>
     </>

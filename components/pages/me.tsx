@@ -12,7 +12,7 @@ const Home: React.FC = () => {
     setBreadcrumb([
       {
         href: '/',
-        label: 'Dashboard',
+        label: 'Home',
         isCurrentPage: false,
       },
       {

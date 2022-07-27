@@ -31,3 +31,5 @@ The `.env.example` file contains a template with everything you need to configur
 ### 🔒 Auth0
 
 If you don't know how to configure auth0, see [this](https://auth0.com/docs/quickstart/webapp/nextjs/01-login) material.
+
+In the current configuration, in addition to the default, we also have the possibility to manipulate user metadata. If you don't know what it is, read [this](https://auth0.com/docs/manage-users/user-accounts/metadata) documentation.

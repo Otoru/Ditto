@@ -11,23 +11,30 @@ import {
   useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
 import React from 'react'
 
-import { Sun, Moon, LogOut, Menu } from 'lib/icons'
+import { Sun, Moon, User, Menu } from 'lib/icons'
 import { Breadcrumb } from 'components/atoms'
 import { useDashboard } from 'lib/dashboard'
 
 const Navbar: React.FC<BoxProps> = (props) => {
   const background = useColorModeValue('gray.100', 'gray.900')
   const { colorMode, toggleColorMode } = useColorMode()
+  const router = useRouter()
 
   const { breadcrumb, drawer } = useDashboard()
 
   const label = colorMode === 'light' ? 'Turn off lights' : 'Turn on lights'
 
+  const onClick = () => {
+    router.push('/me')
+    drawer.onClose()
+  }
+
   return (
     <Box as={'nav'} {...props} bg={background} rounded={'md'} shadow={'lg'}>
-      <Flex py={2} px={4} justify={'space-between'} align={'center'}>
+      <Flex p={2} justify={'space-between'} align={'center'}>
         <Show above={'md'}>
           <Breadcrumb items={breadcrumb} />
         </Show>
@@ -40,7 +47,15 @@ const Navbar: React.FC<BoxProps> = (props) => {
             aria-label={'Toogle menu'}
           />
         </Hide>
-        <HStack>
+        <HStack spacing={2}>
+          <Tooltip label={'About me'}>
+            <IconButton
+              onClick={onClick}
+              variant={'ghost'}
+              aria-label={'About me'}
+              icon={<Icon as={User} />}
+            />
+          </Tooltip>
           <Tooltip label={label}>
             <IconButton
               variant={'ghost'}
@@ -49,15 +64,6 @@ const Navbar: React.FC<BoxProps> = (props) => {
               icon={
                 colorMode === 'light' ? <Icon as={Moon} /> : <Icon as={Sun} />
               }
-            />
-          </Tooltip>
-          <Tooltip label={'Logout'}>
-            <IconButton
-              as={'a'}
-              variant={'ghost'}
-              aria-label={'Logout'}
-              href={'/api/auth/logout'}
-              icon={<Icon as={LogOut} />}
             />
           </Tooltip>
         </HStack>

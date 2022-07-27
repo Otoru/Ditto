@@ -13,6 +13,11 @@ const Home: React.FC = () => {
       {
         href: '/',
         label: 'Home',
+        isCurrentPage: false,
+      },
+      {
+        href: '/workspaces',
+        label: 'Workspaces',
         isCurrentPage: true,
       },
     ])
@@ -20,8 +25,8 @@ const Home: React.FC = () => {
 
   return (
     <WithSidebar sidebar={<Sidebar />}>
-      <Flex align={'center'} justify={'center'} h={'100%'} w={'100%'}>
-        <h1>Welcome to Ditto!</h1>
+      <Flex p={4} align={'center'} justify={'center'} h={'100%'} w={'100%'}>
+        <h1>Welcome to Workspaces!</h1>
       </Flex>
     </WithSidebar>
   )

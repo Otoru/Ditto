@@ -12,18 +12,18 @@ import {
   StackProps,
   IconButton,
   DrawerBody,
+  DrawerFooter,
   DrawerHeader,
   DrawerContent,
   DrawerOverlay,
   DrawerCloseButton,
   useColorModeValue,
-  DrawerFooter,
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { motion } from 'framer-motion'
 import React from 'react'
 
-import { Left, Right, Home, Gear, Chart } from 'lib/icons'
+import { Left, Right, Home, Workspaces } from 'lib/icons'
 import { Brand, Profile } from 'components/atoms'
 import { useDashboard } from 'lib/dashboard'
 
@@ -60,8 +60,8 @@ const Items: React.FC<Props> = ({ withDetails, items, ...props }) => {
               key={href}
               leftIcon={icon}
               variant={'ghost'}
-              justifyContent={'start'}
               onClick={onClick(href)}
+              justifyContent={'start'}
             >
               {label}
             </Button>
@@ -73,7 +73,6 @@ const Items: React.FC<Props> = ({ withDetails, items, ...props }) => {
                 as={Link}
                 key={href}
                 icon={icon}
-                rounded={'full'}
                 variant={'ghost'}
                 aria-label={label}
                 onClick={onClick(href)}
@@ -93,8 +92,11 @@ const Sidebar: React.FC = () => {
 
   const menu = [
     { icon: <Icon as={Home} />, label: 'Home', href: '/' },
-    { icon: <Icon as={Chart} />, label: 'Dashboard', href: '/#chart' },
-    { icon: <Icon as={Gear} />, label: 'Settings', href: '/#gear' },
+    {
+      icon: <Icon as={Workspaces} />,
+      label: 'Workspaces',
+      href: '/workspaces',
+    },
   ]
   return (
     <>
@@ -120,10 +122,22 @@ const Sidebar: React.FC = () => {
             justify={'space-between'}
           >
             <Box w={'100%'}>
-              <Flex p={4} w={'100%'} align={'center'} justify={'space-between'}>
-                <Brand display={sidebar.isOpen ? 'flex' : 'none'} />
+              <Flex
+                p={4}
+                w={'100%'}
+                align={'center'}
+                justify={sidebar.isOpen ? 'space-between' : 'center'}
+              >
+                <motion.div
+                  animate={
+                    sidebar.isOpen
+                      ? { opacity: 1 }
+                      : { display: 'none', opacity: 0 }
+                  }
+                >
+                  <Brand />
+                </motion.div>
                 <IconButton
-                  size={'sm'}
                   variant={'ghost'}
                   onClick={sidebar.onToggle}
                   aria-label={'Toogle navbar state'}

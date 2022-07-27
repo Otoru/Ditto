@@ -2,8 +2,7 @@ import {
   Box,
   Text,
   Icon,
-  Flex,
-  Link,
+  Stack,
   HStack,
   VStack,
   Avatar,
@@ -14,25 +13,17 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { useUser } from '@auth0/nextjs-auth0'
-import { useRouter } from 'next/router'
+import { motion } from 'framer-motion'
 import React from 'react'
 
-import { useDashboard } from 'lib/dashboard'
-import { ExternalLink } from 'lib/icons'
+import { LogOut } from 'lib/icons'
 
 interface Props extends BoxProps {
   withDetails: boolean
 }
 
 const Profile: React.FC<Props> = ({ withDetails, ...props }) => {
-  const { drawer } = useDashboard()
   const { user } = useUser()
-  const router = useRouter()
-
-  const onClick = () => {
-    router.push('/me')
-    drawer.onClose()
-  }
 
   const primary = useColorModeValue('blue.600', 'blue.200')
   const gray = useColorModeValue('gray.400', 'gray.500')
@@ -40,34 +31,40 @@ const Profile: React.FC<Props> = ({ withDetails, ...props }) => {
   const avatar = user?.picture ? user?.picture : undefined
   return (
     <Box {...props}>
-      <Flex justify={'space-between'} align={'center'}>
+      <Stack
+        spacing={4}
+        align={'center'}
+        justify={'space-between'}
+        direction={withDetails ? 'row' : 'column'}
+      >
         <HStack spacing={withDetails ? 4 : 0}>
           <Avatar src={avatar} size={'sm'} />
-          {withDetails && (
-            <VStack spacing={0} align={'start'}>
-              <Heading color={primary} size={'sm'}>
-                {user?.name}
-              </Heading>
-              <Text fontSize={'xs'} color={gray}>
-                {user?.email}
-              </Text>
-            </VStack>
-          )}
+          <VStack
+            spacing={0}
+            as={motion.div}
+            align={'start'}
+            animate={
+              withDetails ? { opacity: 1 } : { display: 'none', opacity: 0 }
+            }
+          >
+            <Heading color={primary} size={'sm'}>
+              {user?.name}
+            </Heading>
+            <Text fontSize={'xs'} color={gray}>
+              {user?.email}
+            </Text>
+          </VStack>
         </HStack>
-        {withDetails && (
-          <Tooltip label={'About me'}>
-            <IconButton
-              as={Link}
-              size={'sm'}
-              rounded={'full'}
-              variant={'ghost'}
-              onClick={onClick}
-              aria-label={'About me'}
-              icon={<Icon as={ExternalLink} />}
-            />
-          </Tooltip>
-        )}
-      </Flex>
+        <Tooltip label={'Logout'}>
+          <IconButton
+            as={'a'}
+            variant={'ghost'}
+            aria-label={'Logout'}
+            href={'/api/auth/logout'}
+            icon={<Icon as={LogOut} />}
+          />
+        </Tooltip>
+      </Stack>
     </Box>
   )
 }

@@ -22,37 +22,6 @@ export class Client {
         .catch((error) => reject(error))
     })
   }
-
-  accounts = ({ email }: { email: string }) => {
-    return new Promise((resolve, reject) => {
-      this.client
-        .getUsersByEmail(email)
-        .then((users) => resolve(users))
-        .catch(reject)
-    })
-  }
-
-  account = ({
-    id,
-  }: {
-    id: string
-  }): Promise<User<AppMetadata, UserMetadata>> => {
-    return new Promise((resolve, reject) => {
-      this.client
-        .getUser({ id })
-        .then((users) => resolve(users))
-        .catch(reject)
-    })
-  }
-
-  merge = ({ primary, secondary }: { primary: string; secondary: string }) => {
-    return new Promise((resolve, reject) => {
-      this.client
-        .linkUsers(secondary, { user_id: primary })
-        .then(resolve)
-        .catch(reject)
-    })
-  }
 }
 
 export class Server {
@@ -70,7 +39,11 @@ export class Server {
     })
   }
 
-  accounts = ({ email }: { email: string }): Promise<User<AppMetadata, UserMetadata>[]> => {
+  accounts = ({
+    email,
+  }: {
+    email: string
+  }): Promise<User<AppMetadata, UserMetadata>[]> => {
     return new Promise((resolve, reject) => {
       this.client
         .getUsersByEmail(email)
@@ -84,17 +57,17 @@ export class Server {
     if (!user.email_verified) return
 
     const accounts = await this.accounts({ email: user.email! })
-    
-    accounts.forEach(account => {
-      if (account.user_id === id) return 
+
+    accounts.forEach((account) => {
+      if (account.user_id === id) return
       if (!account.email_verified) return
-      account.identities?.forEach(({ provider, user_id }) => {
+      account.identities?.forEach(({ provider, user_id: secondary }) => {
         user.identities?.forEach(({ user_id: primary }) => {
-          if (primary !== user_id) {
-            this.client.linkUsers(id, { provider, user_id })
+          if (primary !== secondary) {
+            this.client.linkUsers(id, { provider, user_id: secondary })
           }
         })
       })
-    });
+    })
   }
 }

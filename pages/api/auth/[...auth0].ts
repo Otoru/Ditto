@@ -1,30 +1,41 @@
 import {
   handleAuth,
   handleLogin,
-  handleProfile,
   AfterRefetch,
+  AfterCallback,
+  handleProfile,
+  handleCallback,
 } from '@auth0/nextjs-auth0'
-import { ManagementClient } from 'auth0'
+
+import { Client, Server } from 'lib/auth0'
 
 export default handleAuth({
+  async callback(req, res) {
+    try {
+      const afterCallback: AfterCallback = async (req, res, session, state) => {
+        const api = new Server({ scope: 'read:users' })
+        await api.consolidate({ id: session.user.sub })
+        return session
+      }
+
+      await handleCallback(req, res, { afterCallback });
+    } catch ({ message }) {
+      res.status(500).end(message);
+    }
+  },
   async profile(req, res) {
     try {
       const refetch = true
-      const afterRefetch: AfterRefetch = (req, res, session) => {
-        const id = session.user.sub
-        const token = session.accessToken
-        const scope = process.env.AUTH0_SCOPE
-        const domain = process.env.AUTH0_ISSUER_BASE_URL!.replace(
-          'https://',
-          '',
-        )
-        const api = new ManagementClient({ token, domain, scope })
-        session.user.roles = api.getUserRoles({ id })
+      const afterRefetch: AfterRefetch = async (req, res, session) => {
+        const api = new Client({ session })
+        session.user.preferences =  await api.preferences()
+
         return session
       }
+
       await handleProfile(req, res, { refetch, afterRefetch })
     } catch ({ message }) {
-      res.status(500).end(message)
+      res.status(500).end(JSON.stringify(message))
     }
   },
   async login(req, res) {

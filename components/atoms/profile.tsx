@@ -10,11 +10,13 @@ import {
   Heading,
   BoxProps,
   IconButton,
+  SkeletonText,
+  SkeletonCircle,
   useColorModeValue,
 } from '@chakra-ui/react'
 import { useUser } from '@auth0/nextjs-auth0'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import React from 'react'
 
 import { LogOut } from 'lib/icons'
 
@@ -23,12 +25,14 @@ interface Props extends BoxProps {
 }
 
 const Profile: React.FC<Props> = ({ withDetails, ...props }) => {
-  const { user } = useUser()
-
+  const [avatarLoaded, setAvatarLoaded] = useState(false)
+  const { user, isLoading } = useUser()
+  console.log(user)
   const primary = useColorModeValue('blue.600', 'blue.200')
   const gray = useColorModeValue('gray.400', 'gray.500')
 
   const avatar = user?.picture ? user?.picture : undefined
+
   return (
     <Box {...props}>
       <Stack
@@ -38,7 +42,13 @@ const Profile: React.FC<Props> = ({ withDetails, ...props }) => {
         direction={withDetails ? 'row' : 'column'}
       >
         <HStack spacing={withDetails ? 4 : 0}>
-          <Avatar src={avatar} size={'sm'} />
+          <SkeletonCircle size={'32px'} isLoaded={avatarLoaded}>
+            <Avatar
+              size={'sm'}
+              src={avatar}
+              onLoad={() => setAvatarLoaded(true)}
+            />
+          </SkeletonCircle>
           <VStack
             spacing={0}
             as={motion.div}
@@ -47,12 +57,14 @@ const Profile: React.FC<Props> = ({ withDetails, ...props }) => {
               withDetails ? { opacity: 1 } : { display: 'none', opacity: 0 }
             }
           >
-            <Heading color={primary} size={'sm'}>
-              {user?.name}
-            </Heading>
-            <Text fontSize={'xs'} color={gray}>
-              {user?.email}
-            </Text>
+            <SkeletonText noOfLines={2} spacing={2} isLoaded={!isLoading}>
+              <Heading color={primary} size={'sm'}>
+                {user ? user.name : 'loading'}
+              </Heading>
+              <Text fontSize={'xs'} color={gray}>
+                {user ? user.email : 'loading'}
+              </Text>
+            </SkeletonText>
           </VStack>
         </HStack>
         <Tooltip label={'Logout'}>

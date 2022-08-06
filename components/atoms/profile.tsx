@@ -27,7 +27,7 @@ interface Props extends BoxProps {
 const Profile: React.FC<Props> = ({ withDetails, ...props }) => {
   const [avatarLoaded, setAvatarLoaded] = useState(false)
   const { user, isLoading } = useUser()
-  console.log(user)
+
   const primary = useColorModeValue('blue.600', 'blue.200')
   const gray = useColorModeValue('gray.400', 'gray.500')
 

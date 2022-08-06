@@ -58,4 +58,6 @@ For work with user metadata we need 3 another scopes:
 - `update:current_user_metadata`
 - `delete:current_user_metadata`
 
-In Auth0 application you need enable `read:users` in the Auth0 Management API to `consolidate` accounts after login.
+In Auth0 application (server) you need enable:
+
+- `read:users` in the Auth0 Management API to consolidate accounts after login.
